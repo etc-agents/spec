@@ -8,7 +8,7 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-fastedge = "0.2"
+fastedge = "0.4"
 
 [profile.release]
 opt-level = "z"
