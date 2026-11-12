@@ -10,6 +10,7 @@ use fastedge::{
 const INDEX: &str = include_str!("../../index.html");
 const SPEC: &str = include_str!("../../../SPEC.md");
 const LOADER: &str = include_str!("../../../agents-cat");
+const OG_IMAGE: &[u8] = include_bytes!("../../og.png");
 const ROBOTS: &str = "User-agent: *\nAllow: /\n";
 
 const HTML: &str = "text/html; charset=utf-8";
@@ -63,6 +64,11 @@ fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
         "/spec" | "/spec.md" | "/SPEC.md" => page(MARKDOWN, SPEC, head),
         "/agents-cat" => page(TEXT, LOADER, head),
         "/robots.txt" => page(TEXT, ROBOTS, head),
+        "/og.png" => Response::builder()
+            .status(StatusCode::OK)
+            .header(header::CONTENT_TYPE, "image/png")
+            .header(header::CACHE_CONTROL, "public, max-age=86400")
+            .body(if head { Body::empty() } else { Body::from(OG_IMAGE.to_vec()) }),
         _ => plain(StatusCode::NOT_FOUND, "not found\n"),
     }
 }
