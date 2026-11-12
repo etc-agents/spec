@@ -1,0 +1,29 @@
+#!/bin/sh
+# agents-cat: print the host document defined by the /etc/agents
+# specification (SPEC.md, sections 6.1 and 6.2).
+#
+# Exits 0 when no file exists. Needs stat with -c (GNU coreutils or BusyBox).
+#
+# AGENTS_ROOT=<dir> reads the files below <dir> and not below /.
+# Use it to inspect an image or a mounted disk.
+export LC_ALL=C
+R=${AGENTS_ROOT:-}
+
+trusted() {   # owned by root, not writable by group or others
+    set -- $(stat -Lc '%u %a' "$1" 2>/dev/null)
+    [ "$1" = 0 ] || return 1
+    case $2 in *[2367]?|*[2367]) return 1 ;; esac
+}
+
+trusted "$R/etc/agents" && cat "$R/etc/agents"
+
+ls "$R/usr/lib/agents.d" "$R/run/agents.d" "$R/etc/agents.d" 2>/dev/null |
+grep '^[A-Za-z0-9_.-]*\.md$' | sort -u |
+while read -r n; do
+    for d in "$R/etc/agents.d" "$R/run/agents.d" "$R/usr/lib/agents.d"; do
+        [ -e "$d/$n" ] || continue
+        trusted "$d" && trusted "$d/$n" && [ -s "$d/$n" ] && { echo; cat "$d/$n"; }
+        break
+    done
+done
+exit 0

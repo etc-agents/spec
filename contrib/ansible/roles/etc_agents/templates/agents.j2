@@ -1,0 +1,46 @@
+# {{ etc_agents_title }}
+{% if etc_agents_role %}
+
+## Role
+{{ etc_agents_role | trim }}
+{% endif %}
+{% if etc_agents_owner %}
+
+## Owner
+{{ etc_agents_owner | trim }}
+{% endif %}
+{% if etc_agents_locations %}
+
+## Where things are
+{% for item in etc_agents_locations %}
+- {{ item }}
+{% endfor %}
+{% endif %}
+{% if etc_agents_safe %}
+
+## Safe operations
+{% for item in etc_agents_safe %}
+- {{ item }}
+{% endfor %}
+{% endif %}
+{% if etc_agents_do_not %}
+
+## Do not
+{% for item in etc_agents_do_not %}
+- {{ item }}
+{% endfor %}
+{% endif %}
+{% if etc_agents_change_process %}
+
+## Change process
+{{ etc_agents_change_process | trim }}
+{% endif %}
+{% if etc_agents_escalation %}
+
+## Escalation
+{{ etc_agents_escalation | trim }}
+{% endif %}
+{% if etc_agents_reviewed %}
+
+Last reviewed: {{ etc_agents_reviewed }}
+{% endif %}

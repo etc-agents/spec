@@ -1,0 +1,26 @@
+---
+# Full Markdown text of /etc/agents. When empty, the role builds the file
+# from the etc_agents_* fields below (templates/agents.j2).
+etc_agents_content: ""
+
+# Fields for the built-in template. All are optional.
+etc_agents_title: "{{ inventory_hostname }}"
+etc_agents_role: ""          # What is this host for? Environment? Dependants?
+etc_agents_owner: ""         # Team and contact
+etc_agents_locations: []     # "Logs: journalctl -u myapp"
+etc_agents_safe: []          # Commands that are known to be harmless
+etc_agents_do_not: []        # "Do not X. Reason."
+etc_agents_change_process: "Managed by Ansible. Local edits are overwritten."
+etc_agents_escalation: ""
+etc_agents_reviewed: ""      # Date of the last human review, e.g. 2026-11-12
+
+# Fragments for /etc/agents.d/. Key: file name without ".md". Value: Markdown.
+# An empty value writes an empty file, which masks a package fragment of the
+# same name in /usr/lib/agents.d/.
+etc_agents_fragments: {}
+#  50-postgresql: |
+#    ## PostgreSQL on this host
+#    The cluster `main` is a replica. Do not promote it.
+
+# Remove files in /etc/agents.d/ that are not in etc_agents_fragments.
+etc_agents_purge: false

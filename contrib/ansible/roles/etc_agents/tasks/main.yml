@@ -1,0 +1,56 @@
+---
+- name: Write /etc/agents from etc_agents_content
+  ansible.builtin.copy:
+    content: "{{ etc_agents_content | trim }}\n"
+    dest: /etc/agents
+    owner: root
+    group: root
+    mode: "0644"
+  when: etc_agents_content | trim | length > 0
+
+- name: Write /etc/agents from the template
+  ansible.builtin.template:
+    src: agents.j2
+    dest: /etc/agents
+    owner: root
+    group: root
+    mode: "0644"
+  when: etc_agents_content | trim | length == 0
+
+- name: Create /etc/agents.d
+  ansible.builtin.file:
+    path: /etc/agents.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Write fragments
+  ansible.builtin.copy:
+    content: "{{ (item.value | default('', true) | trim) ~ ('\n' if (item.value | default('', true) | trim) else '') }}"
+    dest: "/etc/agents.d/{{ item.key }}.md"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ etc_agents_fragments | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Find fragments that are not managed
+  ansible.builtin.find:
+    paths: /etc/agents.d
+    patterns: "*.md"
+    file_type: any
+  register: etc_agents_found
+  when: etc_agents_purge | bool
+
+- name: Remove fragments that are not managed
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ etc_agents_found.files | default([]) }}"
+  loop_control:
+    label: "{{ item.path }}"
+  when:
+    - etc_agents_purge | bool
+    - (item.path | basename | regex_replace('\\.md$', '')) not in etc_agents_fragments

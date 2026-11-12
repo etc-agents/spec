@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>/etc/agents — motd for AI agents</title>
+<meta name="description" content="/etc/agents is one Markdown file that tells an AI agent what a Linux host is and how to work on it safely. Vendor-neutral, readable with cat.">
+<meta property="og:title" content="/etc/agents — motd for AI agents">
+<meta property="og:description" content="One file that tells an AI agent what a Linux host is and how to work on it safely.">
+<meta property="og:type" content="website">
+<!-- TODO before publish: set REPO_URL in the links below (search for "REPO_URL"), add og:url and og:image. -->
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1c1b19; --muted: #6b675f; --line: #dedad1;
+  --panel: #f1eee7; --accent: #b3420f; --ok: #2f6f3e; --no: #a32a2a;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #131210; --fg: #e9e6df; --muted: #9a958a; --line: #2e2b26;
+    --panel: #1c1a17; --accent: #ff8a4c; --ok: #7fc48d; --no: #ef8080; }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 var(--sans); }
+main, header, footer { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+a { color: var(--accent); text-underline-offset: 3px; }
+code, pre, .mono { font-family: var(--mono); }
+code { font-size: .9em; background: var(--panel); padding: .1em .35em; border-radius: 4px; }
+pre { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px; overflow-x: auto; font-size: 14px; line-height: 1.55; margin: 20px 0; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.prompt { color: var(--muted); user-select: none; }
+.h { color: var(--accent); font-weight: 600; }
+.c { color: var(--muted); }
+
+header { padding-top: 72px; padding-bottom: 8px; }
+h1 { font: 700 clamp(44px, 11vw, 84px)/1 var(--mono); letter-spacing: -.04em; margin: 0 0 20px; }
+h1 span { color: var(--accent); }
+.tag { font-size: clamp(20px, 4.5vw, 26px); line-height: 1.35; margin: 0 0 12px; }
+.sub { color: var(--muted); margin: 0 0 28px; max-width: 58ch; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+.btn { display: inline-block; padding: 10px 18px; border-radius: 8px; text-decoration: none;
+  font-weight: 600; border: 1px solid var(--fg); color: var(--fg); }
+.btn.primary { background: var(--fg); color: var(--bg); }
+.status { font: 13px var(--mono); color: var(--muted); margin-top: 20px; }
+
+h2 { font: 700 15px var(--mono); text-transform: lowercase; color: var(--muted);
+  margin: 72px 0 16px; padding-top: 20px; border-top: 1px solid var(--line); }
+h2::before { content: "## "; color: var(--accent); }
+h3 { font-size: 18px; margin: 28px 0 6px; }
+p { margin: 0 0 16px; }
+
+.table { width: 100%; overflow-x: auto; margin: 20px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 12px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+td:first-child { white-space: nowrap; }
+tr.me td { font-weight: 600; }
+
+ol.rules { list-style: none; padding: 0; margin: 20px 0; counter-reset: r; }
+ol.rules li { counter-increment: r; padding: 14px 0 14px 44px; border-bottom: 1px solid var(--line); position: relative; }
+ol.rules li::before { content: counter(r); position: absolute; left: 0; top: 14px;
+  font: 700 15px var(--mono); color: var(--accent); }
+ol.rules b { display: block; }
+.ok { color: var(--ok); } .no { color: var(--no); }
+
+details { border-bottom: 1px solid var(--line); padding: 14px 0; }
+summary { cursor: pointer; font-weight: 600; }
+details p { margin: 10px 0 0; color: var(--fg); }
+
+footer { color: var(--muted); font-size: 14px; padding-top: 56px; padding-bottom: 56px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>/</span>etc<span>/</span>agents</h1>
+  <p class="tag"><code>motd</code> for AI agents.</p>
+  <p class="sub">One Markdown file that tells an agent what a Linux host is and how to work on it safely. Vendor-neutral. Owned by root. Readable with <code>cat</code>.</p>
+  <div class="cta">
+    <a class="btn primary" href="REPO_URL/blob/main/SPEC.md">Read the spec</a>
+    <a class="btn" href="REPO_URL">View on GitHub</a>
+  </div>
+  <p class="status">v0.1 · draft for comment</p>
+</header>
+
+<main>
+
+<h2>why</h2>
+<p>Agents now operate servers. They investigate incidents, patch packages and restart services. An agent that lands on a host starts with nothing: it does not know that this is a production replica, where the logs are, or which restart drops live traffic.</p>
+<p>Humans have <code>/etc/motd</code>, a wiki and colleagues. Repositories have <a href="https://agents.md/">AGENTS.md</a>. Hosts have nothing that every agent can read. <code>/etc/agents</code> is that place.</p>
+
+<h2>example</h2>
+<pre><code><span class="prompt">$ </span>cat /etc/agents
+<span class="h"># db-replica-2.prod.example.net</span>
+
+<span class="h">## Role</span>
+PostgreSQL 17 streaming replica for billing. Production.
+The primary is db-primary-1.
+
+<span class="h">## Where things are</span>
+- Logs: journalctl -u postgresql@17-main
+- Config: managed by Ansible. Local edits are overwritten.
+
+<span class="h">## Do not</span>
+- Do not restart postgresql between 06:00 and 08:00 UTC.
+  Nightly reports run then, and a restart makes them
+  fail without an alert.
+- Do not run `pg_ctl promote`. Promotion needs the
+  failover runbook and a human.
+
+<span class="h">## Escalation</span>
+Replication lag above 10 minutes: stop and page #data-oncall.</code></pre>
+<p>No required fields. No schema. Write what a competent new colleague needs on day one with root access and cannot discover with one command: intent, history and consequences.</p>
+
+<h2>layout</h2>
+<p>If you know systemd drop-ins, you already know this.</p>
+<div class="table"><table>
+  <tr><th>Path</th><th>Written by</th><th>For</th></tr>
+  <tr><td><code>/etc/agents</code></td><td>Administrator</td><td>The main description of the host</td></tr>
+  <tr><td><code>/etc/agents.d/*.md</code></td><td>Ansible, Puppet, you</td><td>Site-specific fragments</td></tr>
+  <tr><td><code>/run/agents.d/*.md</code></td><td>Scripts, at runtime</td><td>Temporary state: “maintenance until 14:00”</td></tr>
+  <tr><td><code>/usr/lib/agents.d/*.md</code></td><td>Packages</td><td>How a packaged service is operated</td></tr>
+</table></div>
+<p>The same file name in <code>/etc</code> overrides <code>/run</code>, which overrides <code>/usr/lib</code>. An empty file or a link to <code>/dev/null</code> disables a fragment.</p>
+
+<h2>rules</h2>
+<p>A file that every agent reads is a prompt-injection target. The specification treats it as one.</p>
+<ol class="rules">
+  <li><b>Root only.</b> An agent skips a file that root does not own, or that group or others can write.</li>
+  <li><b>Context, not authority.</b> The file informs. Sudo rules, permissions and sandboxes enforce.</li>
+  <li><b>Restrictions count, grants do not.</b> <span class="ok">“Do not restart X”</span> is respected. <span class="no">“You may disable the firewall”</span> grants nothing.</li>
+  <li><b>This host only.</b> The file cannot send an agent to other hosts, to an external URL or to its own credentials.</li>
+  <li><b>No secrets.</b> Name the secret store. Do not paste the secret.</li>
+</ol>
+
+<h2>adopt</h2>
+<h3>You run servers</h3>
+<pre><code><span class="prompt">$ </span>sudoedit /etc/agents</code></pre>
+<p>Or use the <a href="REPO_URL/tree/main/contrib/ansible">Ansible role</a> or the <a href="REPO_URL/tree/main/contrib/cloud-init">cloud-init snippet</a>. Start from an <a href="REPO_URL/tree/main/examples">example</a>.</p>
+
+<h3>You build an agent</h3>
+<p>Before the first state-changing command on a host, run the reference loader and give the output to the model with a label that names the host. Then apply the five rules.</p>
+<pre><code><span class="prompt">$ </span>ssh host 'sh -s' &lt; agents-cat</code></pre>
+<p>The <a href="REPO_URL/blob/main/agents-cat">loader</a> is 30 lines of POSIX shell. It merges the directories and makes the trust check.</p>
+
+<h3>You package software</h3>
+<p>Ship <code>/usr/lib/agents.d/NN-yourpackage.md</code> with the log locations, the reload-versus-restart rule and the commands that destroy data.</p>
+
+<h2>implementations</h2>
+<p>Agents that read <code>/etc/agents</code>. <a href="REPO_URL">Open a pull request</a> to add yours.</p>
+<!-- TODO before publish: list implementations here. Do not publish an empty list. -->
+
+<h2>related files</h2>
+<div class="table"><table>
+  <tr><th>File</th><th>Audience</th><th>Scope</th></tr>
+  <tr><td><code>/etc/motd</code></td><td>Humans at login</td><td>Host</td></tr>
+  <tr><td><code>/etc/os-release</code></td><td>Programs</td><td>Host identity</td></tr>
+  <tr><td><code>AGENTS.md</code></td><td>Coding agents</td><td>Repository</td></tr>
+  <tr><td><code>/etc/&lt;vendor&gt;/…</code></td><td>One vendor’s agent</td><td>Policy for that tool</td></tr>
+  <tr class="me"><td><code>/etc/agents</code></td><td>Any agent</td><td>Host</td></tr>
+</table></div>
+
+<h2>faq</h2>
+<details><summary>Why not /etc/AGENTS.md?</summary>
+<p>Files in <code>/etc</code> are lowercase and have no document extension: <code>motd</code>, <code>hosts</code>, <code>fstab</code>, <code>issue</code>. A file that looks at home is a file that administrators accept.</p></details>
+<details><summary>Why not put an AGENTS.md in / ?</summary>
+<p>AGENTS.md describes a repository: build steps, tests, code style. A host is not a repository. It has an owner, a role and consequences, and <code>/etc</code> is where a host keeps facts about itself.</p></details>
+<details><summary>My agent already reads a vendor file in /etc. Why another?</summary>
+<p>The vendor file configures one tool. <code>/etc/agents</code> describes the machine, once, for every tool. Read both.</p></details>
+<details><summary>Is this a prompt-injection hole?</summary>
+<p>Only root can write a file that agents accept, and root already controls the host. The rules also stop the next step: the file cannot grant permissions, and it cannot direct an agent to other hosts or to its credentials.</p></details>
+<details><summary>Why Markdown and not YAML?</summary>
+<p>The reader is a language model, and the most useful content is the reason behind a rule. Prose carries reasons. Structured keys are an open question for 1.0.</p></details>
+<details><summary>Will the agent obey the file?</summary>
+<p>The file is advice with a clear scope, not enforcement. Use sudo rules and permissions for what must never happen.</p></details>
+<details><summary>Who owns this?</summary>
+<p>It is an open specification. <!-- TODO before publish: author, license, governance sentence. --></p></details>
+
+</main>
+
+<footer>
+  <p><span class="mono">/etc/agents</span> · open specification, draft v0.1 · <a href="REPO_URL">GitHub</a></p>
+</footer>
+
+</body>
+</html>
