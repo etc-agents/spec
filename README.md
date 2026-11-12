@@ -12,6 +12,7 @@ that this is a production replica, where the logs are, or which restart
 drops live traffic. `/etc/agents` is the place to tell it: plain Markdown,
 owned by root, readable by any agent, local or over SSH.
 
+- Site: <https://etc-agents.org/>
 - Specification: [SPEC.md](SPEC.md) (v0.1, draft)
 - Reference loader: [agents-cat](agents-cat) (POSIX shell, 30 lines)
 - Examples: [examples/](examples/)

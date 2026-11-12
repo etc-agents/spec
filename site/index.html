@@ -8,7 +8,9 @@
 <meta property="og:title" content="/etc/agents — motd for AI agents">
 <meta property="og:description" content="One file that tells an AI agent what a Linux host is and how to work on it safely.">
 <meta property="og:type" content="website">
-<!-- TODO before publish: set REPO_URL in the links below (search for "REPO_URL"), add og:url and og:image. -->
+<meta property="og:url" content="https://etc-agents.org/">
+<link rel="canonical" href="https://etc-agents.org/">
+<!-- TODO before publish: add og:image. -->
 <style>
 :root {
   --bg: #fbfaf7; --fg: #1c1b19; --muted: #6b675f; --line: #dedad1;
@@ -79,8 +81,8 @@ footer { color: var(--muted); font-size: 14px; padding-top: 56px; padding-bottom
   <p class="tag"><code>motd</code> for AI agents.</p>
   <p class="sub">One Markdown file that tells an agent what a Linux host is and how to work on it safely. Vendor-neutral. Owned by root. Readable with <code>cat</code>.</p>
   <div class="cta">
-    <a class="btn primary" href="REPO_URL/blob/main/SPEC.md">Read the spec</a>
-    <a class="btn" href="REPO_URL">View on GitHub</a>
+    <a class="btn primary" href="https://github.com/etc-agents/spec/blob/main/SPEC.md">Read the spec</a>
+    <a class="btn" href="https://github.com/etc-agents/spec">View on GitHub</a>
   </div>
   <p class="status">v0.1 · draft for comment</p>
 </header>
@@ -138,18 +140,18 @@ Replication lag above 10 minutes: stop and page #data-oncall.</code></pre>
 <h2>adopt</h2>
 <h3>You run servers</h3>
 <pre><code><span class="prompt">$ </span>sudoedit /etc/agents</code></pre>
-<p>Or use the <a href="REPO_URL/tree/main/contrib/ansible">Ansible role</a> or the <a href="REPO_URL/tree/main/contrib/cloud-init">cloud-init snippet</a>. Start from an <a href="REPO_URL/tree/main/examples">example</a>.</p>
+<p>Or use the <a href="https://github.com/etc-agents/spec/tree/main/contrib/ansible">Ansible role</a> or the <a href="https://github.com/etc-agents/spec/tree/main/contrib/cloud-init">cloud-init snippet</a>. Start from an <a href="https://github.com/etc-agents/spec/tree/main/examples">example</a>.</p>
 
 <h3>You build an agent</h3>
 <p>Before the first state-changing command on a host, run the reference loader and give the output to the model with a label that names the host. Then apply the five rules.</p>
 <pre><code><span class="prompt">$ </span>ssh host 'sh -s' &lt; agents-cat</code></pre>
-<p>The <a href="REPO_URL/blob/main/agents-cat">loader</a> is 30 lines of POSIX shell. It merges the directories and makes the trust check.</p>
+<p>The <a href="https://github.com/etc-agents/spec/blob/main/agents-cat">loader</a> is 30 lines of POSIX shell. It merges the directories and makes the trust check.</p>
 
 <h3>You package software</h3>
 <p>Ship <code>/usr/lib/agents.d/NN-yourpackage.md</code> with the log locations, the reload-versus-restart rule and the commands that destroy data.</p>
 
 <h2>implementations</h2>
-<p>Agents that read <code>/etc/agents</code>. <a href="REPO_URL">Open a pull request</a> to add yours.</p>
+<p>Agents that read <code>/etc/agents</code>. <a href="https://github.com/etc-agents/spec">Open a pull request</a> to add yours.</p>
 <!-- TODO before publish: list implementations here. Do not publish an empty list. -->
 
 <h2>related files</h2>
@@ -176,12 +178,12 @@ Replication lag above 10 minutes: stop and page #data-oncall.</code></pre>
 <details><summary>Will the agent obey the file?</summary>
 <p>The file is advice with a clear scope, not enforcement. Use sudo rules and permissions for what must never happen.</p></details>
 <details><summary>Who owns this?</summary>
-<p>It is an open specification. <!-- TODO before publish: author, license, governance sentence. --></p></details>
+<p>Nobody owns the path. It is an open specification, started by Andrey Gerasimov. The text is under CC BY 4.0 and the code is under Apache 2.0. All changes happen in public on <a href="https://github.com/etc-agents/spec">GitHub</a>.</p></details>
 
 </main>
 
 <footer>
-  <p><span class="mono">/etc/agents</span> · open specification, draft v0.1 · <a href="REPO_URL">GitHub</a></p>
+  <p><span class="mono">/etc/agents</span> · open specification, draft v0.1 · <a href="https://github.com/etc-agents/spec">GitHub</a></p>
 </footer>
 
 </body>
