@@ -344,8 +344,10 @@ service.
 1. **Name collision.** Checked on 2026-11-12: no package in Debian (stable
    and unstable, main and contrib), Ubuntu (24.04 and the current
    development series) or Fedora (rawhide, Everything) ships `/etc/agents`,
-   `/etc/agents.d`, `/run/agents.d` or `/usr/lib/agents.d`. Not yet
-   checked: Arch, openSUSE, Alpine, third-party vendor packages.
+   `/etc/agents.d`, `/run/agents.d` or `/usr/lib/agents.d`. Checked on
+   2026-11-13 in the same way: Arch (core and extra, x86_64) and Alpine
+   (edge, x86_64) ship none of these paths. Not yet checked: openSUSE,
+   third-party vendor packages.
 2. **Structured data.** Should a small optional front matter exist
    (environment, owner, criticality) so that tools can filter without a
    model?
